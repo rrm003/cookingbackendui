@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -8,11 +8,9 @@ import Button from "@material-ui/core/Button";
 import "./Faq.css"
 import axios from 'axios';
 import NavBar from './NavBar.js';
+import config from './config.json';
 
-// {
-//     q:"question",
-//     a:"Compiled with warnings./Faq.jsLine 1:17:  'Component' is defined but never used     no-unused-var"
-// }
+
 class Faq extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +22,7 @@ class Faq extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
     componentDidMount(){
-        axios.get('http://localhost:8000/v1/faq')
+        axios.get(config.serv_url+'/v1/faq')
         .then((response) => {
                 console.log(response.data.data);
                 if (response.data.data!==null || response.data.data!=="undefined"){
@@ -42,7 +40,7 @@ class Faq extends React.Component {
             question:this.state.question,
             answer:this.state.answer
         }
-        axios.post('http://localhost:8000/v1/addfaq', formData)
+        axios.post(config.serv_url+'/v1/addfaq', formData)
         .then((response) => {
                 console.log(response.data.data);
                 if (response.data.data===true){
@@ -57,7 +55,7 @@ class Faq extends React.Component {
     }
 
     removeFaq(id){
-        axios.post('http://localhost:8000/v1/removefaq/'+id)
+        axios.post(config.serv_url+'/v1/removefaq/'+id)
         .then((response) => {
             console.log(response);
             if (response.data.data === true) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -11,9 +11,10 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
-import "./RecipeForm.css"
-import NavBar from './NavBar.js'
+import "./RecipeForm.css";
+import NavBar from './NavBar.js';
 import axios from 'axios';
+import config from './config.json';
 
 const ColoredLine = ({ color }) => (
     <hr
@@ -69,7 +70,7 @@ export default class RecipeForm extends Component {
     }
 
     renderRecipeType = () =>{
-        axios.get("http://localhost:8000/v1/recipetype")
+        axios.get(config.serv_url+"/v1/recipetype")
         .then((response) => {
             if (response.data.data!==null || response.data.data!=="undefined") {
                 this.setState({names : response.data.data})
@@ -150,7 +151,6 @@ export default class RecipeForm extends Component {
       handleFile(event) {
         console.log(event.target.files[0]);
         console.log(event.target.name)
-        let file = event.target.files[0];
         this.setState({[event.target.name]: event.target.files[0]})
       }
     
@@ -223,12 +223,12 @@ export default class RecipeForm extends Component {
             console.log(formFile)
             
             console.log(JSON.stringify(formData))
-            axios.post('http://localhost:8000/v1/addForm',formData)
+            axios.post(config.serv_url+'/v1/addForm',formData)
               .then((response) => {
                 console.log(response);
                 if (response.data.data === true) {
                     axios.post(
-                        'http://localhost:8000/v1/img/'+response.data.recipeID+"/"+response.data.recipeName,
+                        config.serv_url+'/v1/img/'+response.data.recipeID+"/"+response.data.recipeName,
                         formFile,
                         {
                             headers: {
@@ -429,7 +429,6 @@ export default class RecipeForm extends Component {
                                     style={{ margin: 10}}
                                     variant="outlined"
                                     margin="dense"
-                                    multiline
                                     fullWidth
                                     onChange={this.handleChange}
                                 />

@@ -15,6 +15,8 @@ import Button from "@material-ui/core/Button";
 import NavBar from './NavBar';
 import axios from 'axios';
 
+import config from './config.json';
+
 const ColoredLine = ({ color }) => (
     <hr
         style={{
@@ -51,7 +53,7 @@ class Miscellaneous extends Component {
             alert("Empty Recipe Type")
             return
         }
-        axios.post('http://localhost:8000/v1/addrecipetype/'+ this.state.newRecipeType)
+        axios.post(config.serv_url+'/v1/addrecipetype/'+ this.state.newRecipeType)
         .then((response) => {
                 console.log(response.data.data);
                 if (response.data.data===true){
@@ -67,7 +69,7 @@ class Miscellaneous extends Component {
 
     removeRecipeType(id) {
         console.log(id)
-        axios.post('http://localhost:8000/v1/removerecipetype/'+ id)
+        axios.post(config.serv_url+'/v1/removerecipetype/'+ id)
         .then((response) => {
                 console.log(response.data.data);
                 if (response.data.data===true){
@@ -100,7 +102,7 @@ class Miscellaneous extends Component {
             alert("Enter Recipe !!")
             return
         }
-        axios.post("http://localhost:8000/v1/sendmail/"+this.state.recipe.recipenumber)
+        axios.post(config.serv_url+"/v1/sendmail/"+this.state.recipe.recipenumber)
         .then((response) => {
             if (response.data.data!==null || response.data.data!=="undefined") {
                 alert("Mail Sent!!");
@@ -114,7 +116,7 @@ class Miscellaneous extends Component {
     }
 
     renderRecipeType = () =>{
-        axios.get("http://localhost:8000/v1/getall")
+        axios.get(config.serv_url+"/v1/getall")
         .then((response) => {
             if (response.data.data!==null || response.data.data!=="undefined") {
                 this.setState({names : response.data.data})
@@ -124,7 +126,7 @@ class Miscellaneous extends Component {
           }, (error) => {
             console.log(error);
         });
-        axios.get("http://localhost:8000/v1/recipetype")
+        axios.get(config.serv_url+"/v1/recipetype")
         .then((response) => {
             if (response.data.data!==null || response.data.data!=="undefined") {
                 this.setState({recipeType : response.data.data})

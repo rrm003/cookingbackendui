@@ -12,8 +12,10 @@ import { withStyles} from '@material-ui/core/styles';
 import axios from "axios";
 import Paper from '@material-ui/core/Paper';
 
-import Video from "./Video.js"
-import NavBar from './NavBar.js'
+import Video from "./Video.js";
+import NavBar from './NavBar.js';
+
+import config from './config.json';
 
 const ColoredLine = ({ color }) => (
     <hr
@@ -44,7 +46,7 @@ class Recipe extends Component {
     }
 
     renderRecipe = () =>{
-        axios.get("http://localhost:8000/v1/getForm/"+this.state.id)
+        axios.get(config.serv_url+"/v1/getForm/"+this.state.id)
         .then((response) => {
             if (response.data.data !==null) {
                 var recipe = {
@@ -106,7 +108,7 @@ class Recipe extends Component {
                 <NavBar id={-1}/>
                 <div style={{"width":"100%", "alignContent":"center", "alignItems":"center"}}>
                     <Paper style={{"padding":"2%", "background-image": "linear-gradient(black, white),"}} elevation={3} ref={ref}>
-                        <img src={"http://localhost:8000/image/desktop/"+this.state.recipeData.desktopimg} style={{"backgroundColor":"black"}} width="95%" height="500px" alt="recipe image"/>
+                        <img src={config.serv_url+"/image/desktop/"+this.state.recipeData.desktopimg} style={{"backgroundColor":"black"}} width="95%" height="500px" alt="recipe image"/>
                         <h1>{this.state.recipeData.name}</h1>
                         <label>{this.state.recipeData.type}</label>
                         <div style={{"textAlign":"justify" ,"fontStyle":"italic"}}>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -14,8 +13,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import axios from 'axios';
-import NavBar from './NavBar.js'
-import "./RecipeForm.css"
+import NavBar from './NavBar.js';
+import "./RecipeForm.css";
+import config from './config.json';
 
 const ColoredLine = ({ color }) => (
     <hr
@@ -73,7 +73,7 @@ export default class RecipeForm extends Component {
       }
 
       setData(){
-        axios.get("http://localhost:8000/v1/recipetype")
+        axios.get(config.serv_url+"/v1/recipetype")
         .then((response) => {
             if (response.data.data!==null || response.data.data!=="undefined") {
                 this.setState({names : response.data.data})
@@ -118,8 +118,8 @@ export default class RecipeForm extends Component {
               }
               console.log(this.state.tags)
               if(this.props.location.data["ingrediants"] !==null){
-                for(var i=0; i<this.props.location.data["ingrediants"].length; i++){
-                    var t = this.props.location.data["ingrediants"][i]
+                for( i=0; i<this.props.location.data["ingrediants"].length; i++){
+                     t = this.props.location.data["ingrediants"][i]
                     this.state.ingredientList.push(t)
                 }
               }
@@ -210,7 +210,6 @@ export default class RecipeForm extends Component {
       handleFile(event) {
         console.log(event.target.files[0]);
         console.log(event.target.name)
-        let file = event.target.files[0];
         this.setState({[event.target.name]: event.target.files[0]})
       }
 
@@ -286,12 +285,12 @@ export default class RecipeForm extends Component {
                 nutrients : nutrientsList,
             }
             console.log(JSON.stringify(formData))
-            axios.post('http://localhost:8000/v1/updateForm',formData)
+            axios.post(config.serv_url+'/v1/updateForm',formData)
               .then((response) => {
                 console.log(response);
                 if (response.data.data === true) {
                     axios.post(
-                        'http://localhost:8000/v1/img/'+this.state.number+"/"+this.state.name,
+                        config.serv_url+'/v1/img/'+this.state.number+"/"+this.state.name,
                         formFile,
                         {
                             headers: {
@@ -311,12 +310,11 @@ export default class RecipeForm extends Component {
       }
       
       getForm(index) {
-        axios.get('http://localhost:8000/v1/getForm/'+parseInt(index))
+        axios.get(config.serv_url+'/v1/getForm/'+parseInt(index))
         .then((response) => {
           console.log(response);
           if (response.data.data !== null) {
               alert("Data found!!")
-              var formdata =response.data.data
               this.setState({name: response.data.data.recipename})
           }else {
               alert("Data Not found!!")
